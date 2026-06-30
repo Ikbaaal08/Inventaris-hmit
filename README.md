@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sistem Inventaris Himpunan Mahasiswa Informatika (HMIF)
 
 Aplikasi inventarisasi aset digital dan fisik khusus untuk Himpunan Mahasiswa Informatika (HMIF) yang dibangun menggunakan Framework **Laravel 10** (PHP ^8.1) berbasis arsitektur **MVC** dan pemrograman berorientasi objek (**OOP**).
@@ -129,3 +130,6 @@ Menyembunyikan detail implementasi query database yang kompleks di belakang inte
 * **Sekretaris**: `sekretaris@mail.com`
 * **Staff Himpunan (1 - 40)**: `staff1@mail.com` s.d. `staff40@mail.com`
 * **Anggota Himpunan (1 - 500)**: `anggota1@mail.com` s.d. `anggota500@mail.com`
+=======
+# Inventaris-hmit
+>>>>>>> 43b3b749d2481ef7421eb1616028f133d870be08
