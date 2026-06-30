@@ -10,76 +10,89 @@
 	<link rel="stylesheet" href="{{ url('assets/bootstrap/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ url('assets/fontawesome/css/all.css') }}">
 
-	<!-- Template CSS -->
-	<link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-	<link rel="stylesheet" href="{{ url('assets/css/components.css') }}">
+	<!-- Custom Modern Login CSS -->
+	<link rel="stylesheet" href="{{ url('assets/css/modern-login.css') }}">
 </head>
 
-<body>
-	<div id="app">
-		<section class="section">
-			<div class="d-flex flex-wrap align-items-stretch">
-				<div class="col-lg-4 col-md-6 col-12 order-lg-1 min-vh-100 order-2 bg-white">
-					<div class="p-4 m-3">
-						<h5 class="text-dark font-weight-normal pt-5 mt-5">Aplikasi <span class="font-weight-bold">Inventaris Barang
-								Sekolah</span></h5>
-						@include('utilities.alert')
-						<form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
-							@csrf
-							<div class="form-group">
-								<label for="email">Email</label>
-								<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-									tabindex="1" placeholder="Masukan alamat email.." value="{{ old('email') }}" required autofocus>
+<body class="modern-login-body">
+	<!-- Animated Background Glow Orbs -->
+	<div class="bg-glow-container">
+		<div class="glow-orb glow-orb-1"></div>
+		<div class="glow-orb glow-orb-2"></div>
+		<div class="glow-orb glow-orb-3"></div>
+	</div>
 
-								@error('email')
-								<span class="invalid-feedback" role="alert">
-									<strong>{{ $message }}</strong>
-								</span>
-								@enderror
-
-							</div>
-
-							<div class="form-group">
-								<div class="d-block">
-									<label for="password" class="control-label">Password</label>
-								</div>
-								<input id="password" type="password" class="form-control" name="password" tabindex="2"
-									placeholder="Masukan kata sandi.." required>
-								<div class="invalid-feedback">
-									Mohon masukkan password!
-								</div>
-
-								@error('email')
-								<span class="invalid-feedback" role="alert">
-									<strong>{{ $message }}</strong>
-								</span>
-								@enderror
-							</div>
-
-							<div class="form-group text-right">
-								<button type="submit" class="btn btn-primary btn-lg btn-icon icon-right" tabindex="4">
-									Login
-								</button>
-							</div>
-						</form>
-					</div>
+	<div class="login-wrapper">
+		<div class="login-card">
+			<div class="login-header">
+				<div class="login-logo-container">
+					<i class="fas fa-boxes-stacked"></i>
 				</div>
-				<div
-					class="col-lg-8 col-12 order-lg-2 order-1 min-vh-100 background-walk-y position-relative overlay-gradient-bottom"
-					data-background="../assets/img/unsplash/login-bg.jpg">
-					<div class="absolute-bottom-left index-2">
-						<div class="text-light p-5 pb-2">
-							<div class="mb-5 pb-3">
-								<h1 class="mb-2 display-4 font-weight-bold" id="greetings"></h1>
-								<h5 class="font-weight-normal text-muted-transparent">Bali, Indonesia</h5>
-							</div>
-							Photo by <a class="text-light bb" target="_blank" href="https://unsplash.com/photos/a8lTjWJJgLA">Justin
-								Kauffman</a> on <a class="text-light bb" target="_blank" href="https://unsplash.com">Unsplash</a>
-						</div>
-					</div>
-				</div>
+				<h1 class="login-title">Inventaris HMIT</h1>
+				<p class="login-subtitle">Himpunan Mahasiswa Informatika</p>
 			</div>
-		</section>
+
+			<!-- Dynamic Greeting -->
+			<div class="text-center">
+				<div class="login-greeting" id="greetings"></div>
+			</div>
+
+			<!-- Display Alerts -->
+			@include('utilities.alert')
+
+			<!-- Login Form -->
+			<form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
+				@csrf
+
+				<!-- Email Address -->
+				<div class="form-group-custom">
+					<label for="email">Email</label>
+					<div class="input-wrapper-custom">
+						<i class="fas fa-envelope input-icon-custom"></i>
+						<input id="email" type="email" class="form-control-custom @error('email') is-invalid @enderror" name="email"
+							placeholder="Masukkan alamat email.." value="{{ old('email') }}" required autofocus tabindex="1">
+					</div>
+					@error('email')
+					<div class="invalid-feedback-custom">
+						<i class="fas fa-circle-exclamation"></i>
+						<strong>{{ $message }}</strong>
+					</div>
+					@enderror
+				</div>
+
+				<!-- Password -->
+				<div class="form-group-custom">
+					<div class="d-flex justify-content-between align-items-center mb-1">
+						<label for="password" class="mb-0">Password</label>
+					</div>
+					<div class="input-wrapper-custom">
+						<i class="fas fa-lock input-icon-custom"></i>
+						<input id="password" type="password" class="form-control-custom @error('password') is-invalid @enderror" name="password"
+							placeholder="Masukkan kata sandi.." required tabindex="2">
+						<button type="button" class="password-toggle-btn" id="togglePassword" tabindex="-1">
+							<i class="fas fa-eye"></i>
+						</button>
+					</div>
+					@error('password')
+					<div class="invalid-feedback-custom">
+						<i class="fas fa-circle-exclamation"></i>
+						<strong>{{ $message }}</strong>
+					</div>
+					@enderror
+				</div>
+
+				<!-- Submit Button -->
+				<button type="submit" class="btn-submit-custom" tabindex="3">
+					<span>Sign In</span>
+					<i class="fas fa-arrow-right-to-bracket"></i>
+				</button>
+			</form>
+		</div>
+
+		<!-- Footer Info -->
+		<div class="login-footer">
+			&copy; {{ date('Y') }} HMIT &bull; Sumbawa, Indonesia
+		</div>
 	</div>
 
 	<!-- General JS Scripts -->
@@ -90,17 +103,29 @@
 	<script src="{{ url('assets/js/moment.min.js') }}"></script>
 	<script src="{{ url('assets/js/stisla.js') }}"></script>
 
-	<!-- Template JS File -->
-	<script src="{{ url('assets/js/scripts.js') }}"></script>
-	<script src="{{ url('assets/js/custom.js') }}"></script>
-
 	<!-- Page Specific JS File -->
 	@include('layouts.partials.greetings')
 
 	<script>
 		$(document).ready(function() {
-            $("#greetings").html(greetings());
-        });
+			// Populate the dynamic greeting
+			$("#greetings").html(greetings());
+
+			// Password visibility toggle
+			$("#togglePassword").click(function() {
+				const passwordInput = $("#password");
+				const type = passwordInput.attr("type") === "password" ? "text" : "password";
+				passwordInput.attr("type", type);
+				
+				// Toggle eye icon class
+				const icon = $(this).find("i");
+				if (type === "text") {
+					icon.removeClass("fa-eye").addClass("fa-eye-slash");
+				} else {
+					icon.removeClass("fa-eye-slash").addClass("fa-eye");
+				}
+			});
+		});
 	</script>
 </body>
 

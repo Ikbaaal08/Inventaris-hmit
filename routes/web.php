@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\CommodityAcquisitionController;
 use App\Http\Controllers\CommodityController;
-use App\Http\Controllers\CommodityLocationController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -44,14 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/import', [CommodityController::class, 'import'])->name('import');
     });
 
-    Route::resource('perolehan', CommodityAcquisitionController::class)
-        ->except('create', 'edit', 'show')
-        ->parameter('perolehan', 'commodity_acquisition');
+    Route::resource('peminjaman', LoanController::class)->only(['index', 'store', 'update']);
 
-    Route::resource('ruangan', CommodityLocationController::class)->except('create', 'edit', 'show')
-        ->parameter('ruangan', 'commodity_location');
-    Route::post('/ruangan/import', [CommodityLocationController::class, 'import'])->name('ruangan.import');
-    Route::post('/ruangan/export', [CommodityLocationController::class, 'export'])->name('ruangan.export');
+    Route::post('/pengguna/generate-password', [UserController::class, 'generatePasswords'])->name('pengguna.generate-password');
+    Route::post('/pengguna/generate-by-nim', [UserController::class, 'generateByNim'])->name('pengguna.generate-by-nim');
 
     Route::resource('pengguna', UserController::class)->except('create', 'edit', 'show')
         ->parameter('pengguna', 'user');

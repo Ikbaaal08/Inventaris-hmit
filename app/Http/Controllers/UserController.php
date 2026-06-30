@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -26,9 +27,11 @@ class UserController extends Controller
         });
 
         $users = $query->get()->except(auth()->id());
-        $roles = Role::withCount('users')->get();
+        $roles = Role::all();
+        $admin_count = User::role('Administrator')->count();
+        $user_count = User::count();
 
-        return view('users.index', compact('users', 'roles'));
+        return view('users.index', compact('users', 'roles', 'admin_count', 'user_count'));
     }
 
     /**
@@ -78,5 +81,124 @@ class UserController extends Controller
         $user->delete();
 
         return to_route('pengguna.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    /**
+     * Generate new passwords for selected users.
+     */
+    public function generatePasswords(Request $request)
+    {
+        $this->authorize('update', User::class);
+
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        $userIds = $request->user_ids;
+        $generated = [];
+
+        foreach ($userIds as $id) {
+            $user = User::find($id);
+            if ($user && $user->id !== auth()->id()) {
+                $plainPassword = 'HMIT-' . rand(100, 999) . '-' . strtolower(\Illuminate\Support\Str::random(4));
+                $user->update([
+                    'password' => bcrypt($plainPassword),
+                ]);
+                $generated[] = [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $plainPassword,
+                ];
+            }
+        }
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Password berhasil di-generate!',
+            'data' => $generated,
+        ]);
+    }
+
+    /**
+     * Generate member accounts based on NIMs.
+     */
+    public function generateByNim(Request $request)
+    {
+        $this->authorize('create', User::class);
+
+        $request->validate([
+            'nims' => 'required|string',
+            'email_suffix' => 'required|string',
+            'name_prefix' => 'nullable|string',
+            'password_type' => 'required|in:random,nim,custom',
+            'custom_password' => 'required_if:password_type,custom|nullable|string|min:3',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        $rawNims = preg_split('/[\s,]+/', $request->nims);
+        $nims = array_filter(array_map('trim', $rawNims));
+
+        $emailSuffix = trim($request->email_suffix);
+        if (!\Illuminate\Support\Str::startsWith($emailSuffix, '@')) {
+            $emailSuffix = '@' . $emailSuffix;
+        }
+
+        $namePrefix = trim($request->name_prefix ?? '');
+        $passwordType = $request->password_type;
+        $customPassword = $request->custom_password;
+        
+        $role = Role::findById($request->role_id);
+        
+        $created = [];
+        $skipped = [];
+
+        foreach ($nims as $nim) {
+            if (empty($nim)) continue;
+
+            $email = $nim . $emailSuffix;
+
+            if (User::where('email', $email)->exists()) {
+                $skipped[] = [
+                    'nim' => $nim,
+                    'email' => $email,
+                    'reason' => 'Email sudah terdaftar',
+                ];
+                continue;
+            }
+
+            $name = ($namePrefix ? $namePrefix . ' ' : '') . $nim;
+
+            if ($passwordType === 'random') {
+                $plainPassword = 'HMIT-' . rand(100, 999) . '-' . strtolower(\Illuminate\Support\Str::random(4));
+            } elseif ($passwordType === 'nim') {
+                $plainPassword = $nim;
+            } else {
+                $plainPassword = $customPassword;
+            }
+
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => bcrypt($plainPassword),
+            ]);
+
+            $user->assignRole($role);
+
+            $created[] = [
+                'name' => $name,
+                'email' => $email,
+                'password' => $plainPassword,
+            ];
+        }
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Proses generate selesai!',
+            'data' => [
+                'created' => $created,
+                'skipped' => $skipped,
+            ]
+        ]);
     }
 }

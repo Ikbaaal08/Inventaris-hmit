@@ -43,16 +43,8 @@
                                 <small>{{ $commodity->brand }}</small>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
-                                <span>Lokasi:</span>
-                                <small>{{ $commodity->commodity_location->name ?? '-' }}</small>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
                                 <span>Tahun Pembelian:</span>
                                 <small>{{ $commodity->year_of_purchase }}</small>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Asal Perolehan:</span>
-                                <small>{{ $commodity->commodity_acquisition->name }}</small>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <span>Kondisi:</span>

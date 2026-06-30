@@ -14,25 +14,22 @@ class CommoditySeeder extends Seeder
     public function run(): void
     {
         $commodities = collect([
-            'Meja',
-            'Kursi',
-            'Kursi Roda Dua',
-            'Lemari Kamera',
-            'Lemari Buku',
-            'Lemari Sepatu',
-            'Penghapus Papan Tulis Putih',
-            'Meja Guru',
-            'Kursi Guru',
-            'Rak Sepatu',
-            'Rak Peralatan Sekolah',
-            'Rak Helm',
-            'Rak Sepatu Guru',
-            'Rak Helm Guru',
-            'Papan Tulis Putih',
-            'Papan Tulis Hitam',
-            'Kipas Dinding',
-            'Kipas Angin Portabel',
-            'Kipas Angin',
+            'Laptop Inventaris HMIF',
+            'Proyektor Epson',
+            'Printer Canon Pixma',
+            'Sound System Portable',
+            'Papan Tulis Whiteboard',
+            'Bendera HMIF',
+            'Kamera DSLR Canon',
+            'Dispenser Miyako',
+            'Stopkontak / Kabel Rol',
+            'Lemari Arsip Dokumen',
+            'Modem WiFi Router',
+            'Meja Rapat',
+            'Kursi Lipat Chitose',
+            'Kipas Angin Dinding',
+            'Air Conditioner (AC)',
+            'Papan Pengumuman HMIF',
         ]);
 
         $brands = collect([
@@ -60,11 +57,8 @@ class CommoditySeeder extends Seeder
         ]);
 
         $conditions = collect([1, 2, 3]);
-        $locationIds = CommodityLocation::pluck('id');
 
         $data = $commodities->map(fn ($commodity) => [
-            'commodity_acquisition_id' => mt_rand(1, 2),
-            'commodity_location_id' => $locationIds->random(),
             'item_code' => 'BRG-'.mt_rand(1000, 9999).mt_rand(100, 999),
             'name' => $commodity,
             'brand' => $brands->random(),

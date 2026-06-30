@@ -107,43 +107,7 @@
 			</div>
 
 			<x-filter>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="commodity_location_id">Lokasi Barang:</label>
-							<select name="commodity_location_id" placeholder="Pilih atau ketik lokasi barang.."
-								id="commodity_location_id" @class([ 'form-control' , 'is-valid'=>
-								request()->filled('commodity_location_id')
-								])
-								>
-								<option value="">Pilih lokasi barang..</option>
-								@foreach ($commodity_locations as $commodity_location)
-								<option value="{{ $commodity_location->id }}"
-									@selected(request('commodity_location_id')==$commodity_location->id)>{{
-									$commodity_location->name
-									}}</option>
-								@endforeach
-							</select>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="commodity_acquisition_id">Asal Perolehan:</label>
-							<select name="commodity_acquisition_id" id="commodity_acquisition_id" @class([ 'form-control'
-								, 'is-valid'=> request()->filled('commodity_acquisition_id')
-								])
-								>
-								<option value="">Pilih asal perolehan..</option>
-								@foreach ($commodity_acquisitions as $commodity_acquisition)
-								<option value="{{ $commodity_acquisition->id }}"
-									@selected(request('commodity_acquisition_id')==$commodity_acquisition->id)>{{
-									$commodity_acquisition->name }}
-								</option>
-								@endforeach
-							</select>
-						</div>
-					</div>
-				</div>
+				<!-- Filter ruangan & perolehan dihapus -->
 
 				<div class="row">
 					<div class="col-md-6">
@@ -234,20 +198,11 @@
 							<tr>
 								<th scope="row">{{ $loop->iteration }}</th>
 								<td class="text-center align-middle">
-									<div class="d-flex flex-column align-items-center">
-										<span class="badge badge-primary mb-2">
-											{{ $commodity->item_code }}
-										</span>
-										<span class="d-flex align-items-center">
-											<span class="badge badge-pill badge-info px-3"
-												title="{{ $commodity->commodity_acquisition->name }}">
-												<i class="fa fa-fw far fa-face-laugh mr-1"></i>
-												{{ $commodity->commodity_acquisition->name }}
-											</span>
-										</span>
-									</div>
+									<span class="badge badge-primary">
+										{{ $commodity->item_code }}
+									</span>
 								</td>
-								<td>{{ Str::limit($commodity->name, 55, '...') }}</td>
+								<td>{{ Str::limit($commodity->name, 55, '...') }} <br> <small class="text-muted">Stok: <strong>{{ $commodity->quantity }}</strong></small></td>
 								<td>{{ $commodity->material }}</td>
 								<td>{{ $commodity->brand }}</td>
 								<td>{{ $commodity->year_of_purchase }}</td>
@@ -275,10 +230,30 @@
 								<td class="text-center">
 									<div class="btn-group" role="group" aria-label="Basic example">
 
-										<a href="#" class="btn btn-sm btn-dark qr-modal-button mr-2" data-id="{{ $commodity->id }}"
+										@can('tambah peminjaman')
+										@if($commodity->isBorrowed())
+										<button class="btn btn-sm btn-secondary mr-2" disabled title="Sedang Dipinjam">
+											<i class="fas fa-fw fa-ban"></i>
+										</button>
+										@elseif($commodity->quantity > 0)
+										<a href="#" class="btn btn-sm btn-warning text-white borrow-modal-button mr-2"
+											data-id="{{ $commodity->id }}"
+											data-name="{{ $commodity->name }}"
+											data-max="{{ $commodity->quantity }}"
+											data-toggle="modal" data-target="#borrow_commodity_modal" title="Pinjam Barang">
+											<i class="fas fa-fw fa-handshake"></i>
+										</a>
+										@else
+										<button class="btn btn-sm btn-secondary mr-2" disabled title="Stok Habis">
+											<i class="fas fa-fw fa-ban"></i>
+										</button>
+										@endif
+										@endcan
+
+										<!-- <a href="#" class="btn btn-sm btn-dark qr-modal-button mr-2" data-id="{{ $commodity->id }}"
 											data-toggle="modal" data-target="#qr_code_modal">
 											<i class="fas fa-fw fa-qrcode"></i>
-										</a>
+										</a> -->
 
 										@can('detail barang')
 										<a data-id="{{ $commodity->id }}" class="btn btn-sm btn-info text-white show-modal mr-2"
@@ -329,6 +304,7 @@
 	@include('commodities.modal.import')
 	@include('commodities.modal.export')
 	@include('commodities.modal.qrcode')
+	@include('commodities.modal.borrow')
 	@endpush
 
 	@push('js')

@@ -29,5 +29,21 @@ class RolePermissionSeeder extends Seeder
 
         // staff
         $roles[1]->syncPermissions($staffPermissions);
+
+        // anggota
+        $anggotaPermissions = Permission::whereIn('name', [
+            'lihat barang', 'detail barang',
+            'lihat peminjaman', 'tambah peminjaman', 'ubah peminjaman',
+            'mengatur profile'
+        ])->get();
+        $roles[2]->syncPermissions($anggotaPermissions);
+
+        // ketua himpunan
+        $roles[3]->syncPermissions($administratorPermissions);
+
+        // wakahim, bendahara, sekretaris
+        $roles[4]->syncPermissions($staffPermissions);
+        $roles[5]->syncPermissions($staffPermissions);
+        $roles[6]->syncPermissions($staffPermissions);
     }
 }

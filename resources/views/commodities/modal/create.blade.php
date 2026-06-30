@@ -20,7 +20,7 @@
 
 					<!-- First Row: Basic Information -->
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="item_code">
 									Kode Barang <span class="text-danger">*</span>
@@ -36,7 +36,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="name">
 									Nama Barang <span class="text-danger">*</span>
@@ -44,29 +44,6 @@
 								<input type="text" class="form-control @error('name', 'store') is-invalid @enderror" name="name"
 									id="name" value="{{ old('name') }}" placeholder="Masukan nama barang" required>
 								@error('name', 'store')
-								<div class="invalid-feedback d-block">
-									{{ $message }}
-								</div>
-								@enderror
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="commodity_location_id">
-									Lokasi Barang <span class="text-danger">*</span>
-								</label>
-								<select class="form-control select2 @error('commodity_location_id', 'store') is-invalid @enderror"
-									name="commodity_location_id" id="commodity_location_id" required>
-									<option value="">Pilih Lokasi Barang</option>
-									@foreach ($commodity_locations as $commodity_location)
-									<option value="{{ $commodity_location->id }}" {{ old('commodity_location_id')==$commodity_location->id
-										? 'selected' : '' }}>
-										{{ $commodity_location->name }}
-									</option>
-									@endforeach
-								</select>
-								@error('commodity_location_id', 'store')
 								<div class="invalid-feedback d-block">
 									{{ $message }}
 								</div>
@@ -112,7 +89,7 @@
 
 					<!-- Third Row: Purchase Details -->
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="year_of_purchase">
 									Tahun Pembelian <span class="text-danger">*</span>
@@ -128,30 +105,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="commodity_acquisition_id">
-									Asal Perolehan <span class="text-danger">*</span>
-								</label>
-								<select class="form-control select2 @error('commodity_acquisition_id', 'store') is-invalid @enderror"
-									name="commodity_acquisition_id" id="commodity_acquisition_id" required>
-									<option value="">Pilih Asal Perolehan</option>
-									@foreach ($commodity_acquisitions as $commodity_acquisition)
-									<option value="{{ $commodity_acquisition->id }}" {{
-										old('commodity_acquisition_id')==$commodity_acquisition->id ? 'selected' : '' }}>
-										{{ $commodity_acquisition->name }}
-									</option>
-									@endforeach
-								</select>
-								@error('commodity_acquisition_id', 'store')
-								<div class="invalid-feedback d-block">
-									{{ $message }}
-								</div>
-								@enderror
-							</div>
-						</div>
-
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="condition">
 									Kondisi <span class="text-danger">*</span>

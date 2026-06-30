@@ -85,14 +85,9 @@
 							:active="request()->routeIs('barang.index')" />
 						@endcan
 
-						@can('lihat perolehan')
-						<x-sidebar.sidebar-link name="Data Perolehan" icon="far fa-face-laugh" link="{{ route('perolehan.index') }}"
-							:active="request()->routeIs('perolehan.index')" />
-						@endcan
-
-						@can('lihat ruangan')
-						<x-sidebar.sidebar-link name="Data Ruangan" icon="fas fa-map-location-dot"
-							link="{{ route('ruangan.index') }}" :active="request()->routeIs('ruangan.index')" />
+						@can('lihat peminjaman')
+						<x-sidebar.sidebar-link name="Data Peminjaman" icon="fas fa-handshake" link="{{ route('peminjaman.index') }}"
+							:active="request()->routeIs('peminjaman.index')" />
 						@endcan
 
 						@can('lihat pengguna')
@@ -157,8 +152,7 @@
 	<script src="{{ url('assets/js/scripts.js') }}"></script>
 	<script src="{{ url('assets/js/custom.js') }}"></script>
 
-	<!-- Page Specific JS File -->
-	<script src="{{ url('assets/js/page/index-0.js') }}"></script>
+
 
 	<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
 

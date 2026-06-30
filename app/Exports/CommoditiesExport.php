@@ -15,7 +15,7 @@ class CommoditiesExport implements FromCollection, ShouldAutoSize, WithHeadings,
      */
     public function collection()
     {
-        return Commodity::with('commodity_acquisition', 'commodity_location')->get();
+        return Commodity::all();
     }
 
     /**
@@ -29,8 +29,6 @@ class CommoditiesExport implements FromCollection, ShouldAutoSize, WithHeadings,
             'Nama Barang',
             'Merek',
             'Bahan',
-            'Asal Perolehan',
-            'Lokasi Barang',
             'Tahun Pembelian',
             'Kondisi',
             'Kuantitas',
@@ -55,8 +53,6 @@ class CommoditiesExport implements FromCollection, ShouldAutoSize, WithHeadings,
             $row->name,
             $row->brand,
             $row->material,
-            $row->commodity_acquisition->name,
-            $row->commodity_location->name,
             $row->year_of_purchase,
             $row->getConditionName(),
             $row->quantity,

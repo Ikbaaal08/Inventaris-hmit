@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Commodity;
-use App\CommodityAcquisition;
-use App\CommodityLocation;
 use App\Exports\CommoditiesExport;
 use App\Http\Requests\CommodityExportRequest;
 use App\Http\Requests\CommodityImportRequest;
@@ -28,17 +26,9 @@ class CommodityController extends Controller
      */
     public function index()
     {
-        $query = Commodity::query()->with('commodity_location', 'commodity_acquisition');
+        $query = Commodity::query();
         $query->when(request()->filled('condition'), function ($q) {
             return $q->where('condition', request('condition'));
-        });
-
-        $query->when(request()->filled('commodity_location_id'), function ($q) {
-            return $q->where('commodity_location_id', request('commodity_location_id'));
-        });
-
-        $query->when(request()->filled('commodity_acquisition_id'), function ($q) {
-            return $q->where('commodity_acquisition_id', request('commodity_acquisition_id'));
         });
 
         $query->when(request()->filled('year_of_purchase'), function ($q) {
@@ -53,12 +43,10 @@ class CommodityController extends Controller
             return $q->where('brand', request('brand'));
         });
 
-        $commodities = $query->latest()->get();
+        $commodities = $query->with('loans')->latest()->get();
         $year_of_purchases = Commodity::pluck('year_of_purchase')->unique()->sort();
         $commodity_brands = Commodity::pluck('brand')->unique()->sort();
         $commodity_materials = Commodity::pluck('material')->unique()->sort();
-        $commodity_acquisitions = CommodityAcquisition::orderBy('name', 'ASC')->get();
-        $commodity_locations = CommodityLocation::orderBy('name', 'ASC')->get();
 
         $commodity_condition_count = $this->commodityRepository->countCommodityCondition()->map(function ($commodity) {
             return collect([
@@ -78,8 +66,6 @@ class CommodityController extends Controller
             'commodities.index',
             compact(
                 'commodities',
-                'commodity_acquisitions',
-                'commodity_locations',
                 'year_of_purchases',
                 'commodity_brands',
                 'commodity_materials',
@@ -125,8 +111,8 @@ class CommodityController extends Controller
     {
         $this->authorize('print barang');
 
-        $commodities = Commodity::select('id', 'commodity_acquisition_id', 'item_code', 'name')->with('commodity_acquisition')->get();
-        $sekolah = env('NAMA_SEKOLAH', 'Barang Milik Sekolah');
+        $commodities = Commodity::select('id', 'item_code', 'name')->get();
+        $sekolah = env('NAMA_SEKOLAH', 'Barang Milik HMIF');
         $pdf = Pdf::loadView('commodities.pdf', compact(['commodities', 'sekolah']))->setPaper('a4');
 
         return $pdf->download('print.pdf');
@@ -140,7 +126,7 @@ class CommodityController extends Controller
         $this->authorize('print individual barang');
 
         $commodity = Commodity::find($id);
-        $sekolah = env('NAMA_SEKOLAH', 'Barang Milik Sekolah');
+        $sekolah = env('NAMA_SEKOLAH', 'Barang Milik HMIF');
         $pdf = Pdf::loadView('commodities.pdfone', compact(['commodity', 'sekolah']))->setPaper('a4');
         $fileName = 'print-'.$commodity->item_code.'.pdf';
 

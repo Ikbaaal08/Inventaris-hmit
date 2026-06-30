@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\CommodityAcquisition;
-use App\CommodityLocation;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +17,7 @@ class CommodityFactory extends Factory
      */
     public function definition(): array
     {
-        $commodityAcquisitionID = CommodityAcquisition::inRandomOrder()->first()->id;
-        $commodityLocationID = CommodityLocation::inRandomOrder()->first()->id;
-
         return [
-            'commodity_acquisition_id' => $commodityAcquisitionID,
-            'commodity_location_id' => $commodityLocationID,
             'item_code' => 'BRG-'.fake()->unique()->numberBetween(1000, 9999).fake()->numberBetween(100, 999),
             'name' => fake()->word(),
             'brand' => fake()->company(),

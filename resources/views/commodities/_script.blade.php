@@ -1,14 +1,8 @@
 <script>
 	$(document).ready(function () {
-		new TomSelect("#commodity_create_modal form #commodity_location_id");
-		new TomSelect("#filter-accordion form #commodity_location_id");
 		new TomSelect("#filter-accordion form #year_of_purchase");
 		new TomSelect("#filter-accordion form #material");
 		new TomSelect("#filter-accordion form #brand");
-
-		const commodityLocationInput = new TomSelect(
-			"#commodity_edit_modal form #commodity_location_id"
-		);
 
 		$(".show-modal").click(function () {
 			const id = $(this).data("id");
@@ -25,16 +19,10 @@
 				success: (res) => {
 					$("#show_commodity #item_code").val(res.data.item_code);
 					$("#show_commodity #name").val(res.data.name);
-					$("#show_commodity #commodity_location_id").val(
-						res.data.commodity_location.name
-					);
 					$("#show_commodity #material").val(res.data.material);
 					$("#show_commodity #brand").val(res.data.brand);
 					$("#show_commodity #year_of_purchase").val(res.data.year_of_purchase);
 					$("#show_commodity #condition").val(res.data.condition_name);
-					$("#show_commodity #commodity_acquisition_id").val(
-						res.data.commodity_acquisition.name
-					);
 					$("#show_commodity #note").val(res.data.note);
 					$("#show_commodity #quantity").val(res.data.quantity);
 					$("#show_commodity #price").val(res.data.price_formatted);
@@ -76,19 +64,12 @@
 						res.data.year_of_purchase
 					);
 					$("#commodity_edit_modal form #condition").val(res.data.condition);
-					$("#commodity_edit_modal form #commodity_acquisition_id").val(
-						res.data.commodity_acquisition.id
-					);
 					$("#commodity_edit_modal form #note").val(res.data.note);
 					$("#commodity_edit_modal form #quantity").val(res.data.quantity);
 					$("#commodity_edit_modal form #price").val(res.data.price);
 					$("#commodity_edit_modal form #price_per_item").val(
 						res.data.price_per_item
 					);
-
-					if (res.data.role !== null) {
-						commodityLocationInput.setValue(res.data.commodity_location.id);
-					}
 
 					$("#commodity_edit_modal form").attr("action", updateURL);
 				},
@@ -142,6 +123,16 @@
 					console.log(err);
 				},
 			});
+		});
+
+		$(document).on("click", ".borrow-modal-button", function () {
+			const id = $(this).data("id");
+			const name = $(this).data("name");
+			const max = $(this).data("max");
+
+			$("#borrow_commodity_modal form #commodity_id").val(id);
+			$("#borrow_commodity_modal form #commodity_name").val(name);
+			$("#borrow_commodity_modal form #quantity").attr("max", max).val(1);
 		});
 	});
 </script>

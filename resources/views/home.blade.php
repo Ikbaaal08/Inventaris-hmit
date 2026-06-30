@@ -114,21 +114,15 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-7">
+		<div class="col-lg-12">
 			<x-bar-chart chartTitle="Grafik Jumlah Barang Berdasarkan Tahun Pembelian" chartID="chartCommodityCountEachYear"
 				:series="$charts['commodity_each_year_of_purchase_count']['series']"
 				:categories="$charts['commodity_each_year_of_purchase_count']['categories']">
 			</x-bar-chart>
 		</div>
-		<div class="col-lg-5">
-			<x-pie-chart chartTitle="Grafik Jumlah Barang Berdasarkan Perolehan"
-				chartID="chartCommodityByCommodityAcquisitionCount"
-				:series="$charts['commodity_by_commodity_acquisition_count']['series']"
-				:categories="$charts['commodity_by_commodity_acquisition_count']['categories']"></x-pie-chart>
-		</div>
 	</div>
 
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-lg-6">
 			<x-pie-chart chartTitle="Grafik Jumlah Barang Berdasarkan Material" chartID="chartCommodityByMaterial"
 				:series="$charts['commodity_by_material_count']['series']"
@@ -139,24 +133,7 @@
 				:series="$charts['commodity_by_brand_count']['series']"
 				:categories="$charts['commodity_by_brand_count']['categories']"></x-pie-chart>
 		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-12">
-			<x-bar-chart chartTitle="Grafik Jumlah Barang Berdasarkan Ruangan" chartID="chartCommodityCountEachLocation"
-				:series="$charts['commodity_each_location_count']['series']"
-				:categories="$charts['commodity_each_location_count']['categories']">
-			</x-bar-chart>
-		</div>
-
-		<div class="col-lg-12">
-			<x-stacked-bar :series="$charts['commodity_condition_by_location']['series']"
-				:categories="$charts['commodity_condition_by_location']['categories']"
-				chartTitle="Grafik Perbandingan Kondisi Barang di Setiap Ruangan" :colors="['#47C363', '#FFA426', '#FC544B']"
-				chartID="chartCommodityConditionByLocation">
-			</x-stacked-bar>
-		</div>
-	</div>
+	</div> -->
 
 	@push('modal')
 	@include('commodities.modal.show')

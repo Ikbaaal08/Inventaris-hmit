@@ -36,10 +36,6 @@
       <th>Nama Barang : </th>
       <td>{{ $commodity->name }}</td>
     </tr>
-    <tr>
-      <th>Asal Perolehan : </th>
-      <td>{{ $commodity->commodity_acquisition->name }}</td>
-    </tr>
   </table>
   <br>
   @if ($key!=0)

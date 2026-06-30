@@ -14,7 +14,12 @@ class RoleSeeder extends Seeder
     {
         $roles = collect([
             ['name' => 'Administrator'],
-            ['name' => 'Staff TU (Tata Usaha)'],
+            ['name' => 'Staff Himpunan'],
+            ['name' => 'Anggota'],
+            ['name' => 'Ketua Himpunan'],
+            ['name' => 'Wakil Ketua Himpunan'],
+            ['name' => 'Bendahara'],
+            ['name' => 'Sekretaris'],
         ]);
 
         $roles = $roles->map(function ($role) {

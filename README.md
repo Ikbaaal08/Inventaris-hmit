@@ -1,117 +1,131 @@
-# Inven BS
+# Sistem Inventaris Himpunan Mahasiswa Informatika (HMIF)
 
-Aplikasi inventaris barang sekolah menggunakan Framework Laravel 10. Aplikasi ini cocok untuk digunakan untuk di sekolah.
+Aplikasi inventarisasi aset digital dan fisik khusus untuk Himpunan Mahasiswa Informatika (HMIF) yang dibangun menggunakan Framework **Laravel 10** (PHP ^8.1) berbasis arsitektur **MVC** dan pemrograman berorientasi objek (**OOP**).
 
-Beberapa CRUD menggunakan modal dan AJAX untuk pengambilan data agar mengurangi penggunaan pindah halaman.
+---
 
-### Prasyarat
+## 🛠️ Fitur Utama
+* **CRUD Data Barang**: Manajemen lengkap data barang digital/fisik inventaris himpunan.
+* **Peminjaman & Pengembalian Barang**: Anggota dapat meminjam barang dan mengembalikannya secara mandiri (mengurangi stok otomatis saat dipinjam, menambah kembali saat dikembalikan).
+* **Cetak QR Code**: Penomoran barang digital otomatis beserta generate QR Code dinamis untuk scan verifikasi barang.
+* **Manajemen Pengguna (Role-based)**: Pembagian akses teratur untuk Administrator, Ketua Himpunan, Pengurus (Wakahim/Sekre/Bendahara/Staff), dan Anggota.
+* **Export & Import Excel**: Mempermudah administrasi rekap barang dalam jumlah banyak.
+* **Cetak PDF**: Membuat cetak kartu inventaris fisik.
 
-Berikut beberapa hal yang perlu diinstal terlebih dahulu:
+---
 
--   Composer (https://getcomposer.org/)
--   PHP ^8.1
--   MySQL
--   XAMPP
+## 🏗️ Letak Struktur MVC (Model-View-Controller)
 
-Jika Anda menggunakan XAMPP, untuk PHP dan MySQL sudah menjadi 1 (bundle) di dalam aplikasi XAMPP
+Aplikasi ini menggunakan pola arsitektur **Model-View-Controller (MVC)** standar Laravel untuk memisahkan logika bisnis, penyimpanan data, dan tampilan antarmuka:
 
-### Fitur
+### 1. Model (M)
+Bertanggung jawab atas pengelolaan data, validasi model, casts tipe data, dan relasi tabel database.
+* **[Commodity.php](file:///d:/Kuliah/Proyek/inven-bs/app/Commodity.php)**: Mengatur data barang dan method bantuan format rupiah/tanggal.
+* **[Loan.php](file:///d:/Kuliah/Proyek/inven-bs/app/Loan.php)**: Mengatur relasi peminjaman barang ke `User` (peminjam) dan `Commodity` (barang yang dipinjam).
+* **[User.php](file:///d:/Kuliah/Proyek/inven-bs/app/User.php)**: Mengatur data otentikasi akun pengguna dan integrasi hak akses Spatie.
 
--   CRUD Data Barang
--   Import/export excel barang
--   Print barang (seluruh/individual)
--   CRUD Data Perolehan
--   CRUD Data Ruangan
--   CRUD Data Pengguna
--   Pengaturan Profil
+### 2. View (V)
+Menangani visualisasi antarmuka pengguna (User Interface) menggunakan Blade template engine.
+* **Folder [resources/views/commodities/](file:///d:/Kuliah/Proyek/inven-bs/resources/views/commodities)**: Halaman daftar barang, form modal tambah/ubah barang, serta template cetak PDF.
+* **Folder [resources/views/loans/](file:///d:/Kuliah/Proyek/inven-bs/resources/views/loans)**: Halaman data peminjaman dan aksi pengembalian barang bagi anggota.
+* **Folder [resources/views/components/](file:///d:/Kuliah/Proyek/inven-bs/resources/views/components)**: Komponen layout sidebar, navbar, filter, dan tabel yang *reusable*.
 
-### Preview Gambar
+### 3. Controller (C)
+Bertindak sebagai jembatan yang memproses *request* dari pengguna, berinteraksi dengan Model, dan mengembalikan hasil olahan data ke View.
+* **[CommodityController.php](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/CommodityController.php)**: Mengatur alur CRUD barang, cetak PDF, dan impor/ekspor data.
+* **[LoanController.php](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/LoanController.php)**: Mengontrol transaksi peminjaman barang dan pengembalian stok barang.
+* **[HomeController.php](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/HomeController.php)**: Mengontrol render dashboard statistik grafik kondisi barang, merk, dan material.
 
-_Tampilan Login_
-![Image 1](https://i.imgur.com/CzlxTZd.jpeg)
+---
 
-_Dashboard_
-![Image 2](https://i.imgur.com/hBlIriY.jpeg)
+## 🧩 Letak Penerapan OOP (Object-Oriented Programming)
 
-_Daftar Barang_
-![Image 3](https://i.imgur.com/ObA0ivV.jpeg)
+Konsep Pemrograman Berorientasi Objek diterapkan secara nyata di dalam kode program aplikasi ini:
 
-_Print_
-![Image 4](https://i.imgur.com/a7yj6Or.png)
+### 1. Inheritance (Pewarisan)
+Pewarisan digunakan untuk mewarisi sifat dan fungsionalitas dari kelas induk (*parent class*).
+* **Controller**: Kelas [CommodityController](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/CommodityController.php#L18) mewarisi kelas [Controller](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/Controller.php) bawaan Laravel untuk mengakses fungsionalitas authorization dan middleware.
+* **Model**: Kelas [Commodity](file:///d:/Kuliah/Proyek/inven-bs/app/Commodity.php#L10) mewarisi kelas `Eloquent\Model` untuk mendapatkan kemampuan manipulasi database active record.
+* **FormRequest**: Kelas [StoreCommodityRequest](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Requests/StoreCommodityRequest.php#L7) mewarisi `FormRequest` untuk validasi otomatis inputan form.
 
-_Print Individual_
-![Image 5](https://i.imgur.com/Spjtxpv.png)
+### 2. Encapsulation (Enkapsulasi)
+Membungkus properti dan metode di dalam kelas untuk menjaga keamanan data dengan membatasi hak akses menggunakan visibilitas (`public`, `protected`, `private`).
+* **[CommodityRepository.php](file:///d:/Kuliah/Proyek/inven-bs/app/Repositories/CommodityRepository.php#L9-L11)**: Menggunakan kata kunci `private` pada parameter constructor untuk mengamankan instance model agar hanya bisa diakses di dalam repositori tersebut:
+  ```php
+  public function __construct(
+      private Commodity $model
+  ) {}
+  ```
+* **[Commodity.php](file:///d:/Kuliah/Proyek/inven-bs/app/Commodity.php#L14-L18)**: Menggunakan visibilitas `protected` pada properti `$guarded` dan `$casts` untuk memproteksi konfigurasi internal model.
 
-_Daftar Perolehan_
-![Image 6](https://i.imgur.com/xRB8sTC.jpeg)
+### 3. Abstraction (Abstraksi)
+Menyembunyikan detail implementasi query database yang kompleks di belakang interface/kelas khusus.
+* **Repository Pattern**: Diimplementasikan pada [CommodityRepository.php](file:///d:/Kuliah/Proyek/inven-bs/app/Repositories/CommodityRepository.php). Controller tidak perlu mengetahui bagaimana query database SQL ditulis (misal query grouping / sum), cukup memanggil metode abstraksi bersih seperti:
+  ```php
+  $this->commodityRepository->countCommodityCondition();
+  ```
 
-_Daftar Ruangan_
-![Image 7](https://i.imgur.com/be84Pgh.jpeg)
+### 4. Dependency Injection & Polymorphism
+* **Dependency Injection**: Memasukkan dependensi kelas yang dibutuhkan secara otomatis melalui parameter constructor. Terlihat pada [CommodityController.php](file:///d:/Kuliah/Proyek/inven-bs/app/Http/Controllers/CommodityController.php#L20-L24) di mana objek `CommodityRepository` diinjeksikan secara otomatis oleh service container Laravel.
+* **Polimorfisme**: Terlihat pada validasi request di method `store(StoreCommodityRequest $request)` dan `update(UpdateCommodityRequest $request)`. Method controller dapat menerima tipe objek request yang berbeda namun diproses dengan interface penanganan request yang sama dari Laravel.
 
-_Daftar Pengguna_
-![Image 8](https://i.imgur.com/aXxh5pJ.jpeg)
+---
 
-_Pengaturan Profil_
-![Image 9](https://i.imgur.com/4b9jAck.jpeg)
+## 🚀 Langkah Instalasi & Uji Coba
 
-_Daftar Peran dan Hak Akses_
-![Image 10](https://i.imgur.com/lnJdXbl.jpeg)
+1. **Clone repository ini**
+   ```bash
+   git clone https://github.com/mrizkimaulidan/inven-bs.git
+   cd inven-bs
+   ```
 
-_Verifikasi Barang_
-![Image 11](https://i.imgur.com/EQWaOtl.jpeg)
+2. **Install dependensi PHP via Composer**
+   ```bash
+   composer install
+   ```
 
-### Langkah-langkah instalasi
+3. **Konfigurasi Environment**
+   * Salin file `.env.example` menjadi `.env`
+   * Buat database baru bernama `inven-bs` (atau nama lain) di MySQL Anda (misalnya melalui phpMyAdmin atau terminal).
+   * Buka berkas `.env` baru Anda dan sesuaikan detail database pada bagian:
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=inven-bs
+     DB_USERNAME=root
+     DB_PASSWORD=
+     ```
 
--   Clone repository ini
+4. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-```bash
-$ git clone https://github.com/mrizkimaulidan/inven-bs.git
-```
+5. **Jalankan Database Migration & Seeding** (untuk membuat struktur tabel dan mengisi 545 akun dummy otomatis):
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
--   Install seluruh packages yang dibutuhkan
+6. **(Opsional) Install Dependensi Frontend & Kompilasi Aset** (jika ingin memodifikasi CSS/JS):
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-```bash
-$ composer install
-```
+7. **Jalankan Web Server Lokal**
+   ```bash
+   php artisan serve
+   ```
+   Aplikasi dapat diakses di browser melalui tautan `http://127.0.0.1:8000`.
 
--   Siapkan database dan atur file .env sesuai dengan konfigurasi Anda
+---
 
--   Masukan nama sekolah pada konfigurasi .env untuk menampilkan nama sekolah pada print barang. Berikan tanda kutip jika nama sekolah mengandung spasi
-
-Contoh:
-
-```
-NAMA_SEKOLAH="SD Negeri 001 Ciledug"
-```
-
--   Jika sudah, migrate seluruh migrasi dan seeding data
-
-```bash
-$ php artisan migrate --seed
-```
-
--   Jalankan local server
-
-```
-$ php artisan serve
-```
-
--   User default aplikasi untuk login
-
-Administrator
-
-```
-Email       : admin@mail.com
-Password    : secret
-```
-
-Staff TU (Tata Usaha)
-
-```
-Email       : stafftu@mail.com
-Password    : secret
-```
-
-### Dibuat dengan
-
--   [Laravel](https://laravel.com) - Web Framework
+## 🔑 Kredensial Akun Dummy Pengujian (Password: `secret`)
+* **Administrator**: `admin@mail.com`
+* **Ketua Himpunan**: `kahim@mail.com`
+* **Wakil Ketua Himpunan**: `wakahim@mail.com`
+* **Bendahara**: `bendahara@mail.com`
+* **Sekretaris**: `sekretaris@mail.com`
+* **Staff Himpunan (1 - 40)**: `staff1@mail.com` s.d. `staff40@mail.com`
+* **Anggota Himpunan (1 - 500)**: `anggota1@mail.com` s.d. `anggota500@mail.com`

@@ -15,8 +15,6 @@ class CreateCommoditiesTable extends Migration
     {
         Schema::create('commodities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('commodity_acquisition_id')->constrained();
-            $table->foreignId('commodity_location_id')->constrained();
             $table->string('item_code')->unique();
             $table->string('register');
             $table->string('name');

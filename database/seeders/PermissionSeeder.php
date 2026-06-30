@@ -12,7 +12,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $menuNames = collect(['barang', 'perolehan', 'ruangan', 'pengguna']);
+        $menuNames = collect(['barang', 'pengguna', 'peminjaman']);
         $permissionNames = ['tambah', 'lihat', 'detail', 'ubah', 'hapus'];
 
         $permissions = $menuNames->flatMap(function ($menuName) use ($permissionNames) {
@@ -29,8 +29,6 @@ class PermissionSeeder extends Seeder
         $mergedPermissions = $permissions->merge([
             ['name' => 'import barang', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'export barang', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'import ruangan', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'export ruangan', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'print barang', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'print individual barang', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'mengatur profile', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],

@@ -17,21 +17,7 @@ class Commodity extends Model
         'condition' => 'integer',
     ];
 
-    /**
-     * Get the commodity location associated with the commodity.
-     */
-    public function commodity_location()
-    {
-        return $this->belongsTo(CommodityLocation::class);
-    }
 
-    /**
-     * Get the commodity acquisition associated with the commodity.
-     */
-    public function commodity_acquisition()
-    {
-        return $this->belongsTo(CommodityAcquisition::class);
-    }
 
     /**
      * Format a date value to Indonesian date format (dd-mm-yyyy).
@@ -61,4 +47,21 @@ class Commodity extends Model
             default => null
         };
     }
+
+    /**
+     * Get the loans for this commodity.
+     */
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    /**
+     * Check if the commodity is currently borrowed and not yet returned.
+     */
+    public function isBorrowed()
+    {
+        return $this->loans()->where('status', 'dipinjam')->exists();
+    }
 }
+

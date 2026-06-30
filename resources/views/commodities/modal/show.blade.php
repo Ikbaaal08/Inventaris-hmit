@@ -11,7 +11,7 @@
 			<div class="modal-body">
 				<!-- First Row: Basic Information -->
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="item_code">
 								Kode Barang
@@ -20,21 +20,12 @@
 						</div>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="name">
 								Nama Barang
 							</label>
 							<input type="text" class="form-control" id="name" disabled>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="commodity_location_id">
-								Lokasi Barang
-							</label>
-							<input type="text" class="form-control" id="commodity_location_id" disabled>
 						</div>
 					</div>
 				</div>
@@ -64,7 +55,7 @@
 
 				<!-- Third Row: Purchase Details -->
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="year_of_purchase">
 								Tahun Pembelian
@@ -73,16 +64,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="commodity_acquisition_id">
-								Asal Perolehan
-							</label>
-							<input type="text" class="form-control" id="commodity_acquisition_id" disabled>
-						</div>
-					</div>
-
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="condition">
 								Kondisi
