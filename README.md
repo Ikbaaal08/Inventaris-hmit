@@ -76,7 +76,7 @@ Menyembunyikan detail implementasi query database yang kompleks di belakang inte
 
 1. **Clone repository ini**
    ```bash
-   git clone https://github.com/mrizkimaulidan/inven-bs.git
+   git clone https://github.com/Ikbaaal08/Inventaris-hmit.git
    cd inven-bs
    ```
 
